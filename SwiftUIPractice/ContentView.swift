@@ -16,6 +16,14 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .task {
+            do {
+                let posts = try await RemotePostService().fetchAllPosts()
+                print("✅ Posts:", posts.map { $0.title })
+            } catch {
+                print("❌ Error:", error)
+            }
+        }
     }
 }
 

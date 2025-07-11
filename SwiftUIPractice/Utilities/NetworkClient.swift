@@ -75,7 +75,7 @@ final class NetworkClient {
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             
-            let (responseData, response) = try await URLSession.shared.upload(for: request, from: data)
+            let (_, response) = try await URLSession.shared.upload(for: request, from: data)
             try validate(response)
         } catch {
             throw error
