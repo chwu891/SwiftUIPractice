@@ -27,12 +27,22 @@ struct ListView: View {
     
     @State private var selectedOceans: [Ocean] = []
     
+    @State private var searchText: String = ""
+    
+    private var filteredOceans: [Ocean] {
+        if searchText.isEmpty {
+            return oceans
+        } else {
+            return oceans.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
                 List(selection: $multiSelection) {
                     Section("OCEAN") {
-                        ForEach(oceans) { ocean in
+                        ForEach(filteredOceans) { ocean in
                             Text(ocean.name)
                                 .listRowBackground(Color.white)
                                 .swipeActions(edge: .leading) {
@@ -59,6 +69,7 @@ struct ListView: View {
                         }
                     }
                 }
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic), prompt: "Search oceans")
                 
                 if !selectedOceans.isEmpty {
                     ForEach(selectedOceans) { ocean in
